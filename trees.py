@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import random as rd
+import math
 from matplotlib.path import Path
 import matplotlib.patches as patches
 
@@ -8,23 +9,19 @@ from wind import windclass
 
 rd.seed(a=None, version =2)
 #create an array of points we can use
-WINDRANGE = 0.1
 len = 32
-num = 8
-x = np.zeros((num,2,len),dtype=float)
-gust = windclass(0)
-for j in range(0,num):
-    for i in range(0,len):
-        x[j][0][i] = i
-        x[j][1][i] += gust.step(i)
-    gust.setVel(0)
+codes = []
+tpath = np.zeros((len,2))
+for r in range(0,len):
+    tpath[r][0] = r*math.cos(r)
+    tpath[r][1] = r*math.sin(r)
+    codes.append(Path.LINETO)
+codes[0] = Path.MOVETO
 
-heights = x[0,0,:]
-lengths = x[0,1,:]
-print(heights)
-print(lengths)
-fig = plt.figure()
-ax = fig.add_subplot(111)
-for i in range(0,num):
-    ax.plot(x[i][1][:],x[i][0][:], 'go--')
+mypath = Path(tpath, codes)
+patch = patches.PathPatch(mypath)
+fig, ax = plt.subplots()
+ax.add_patch(patch)
+ax.set_xlim(-40,40)
+ax.set_ylim(-40,40)
 plt.show()
