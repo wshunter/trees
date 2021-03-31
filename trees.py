@@ -12,11 +12,10 @@ from coordinator import *
 def main():
     rd.seed()
     tree = coordinator()
-    tree.newBranch("1","1",length=8)
-    tree.newBranch("1","2",length=6)
-    for idx in range(200):
-        tree.newBranch("1", str(idx), length = gen.gaussianBranchLengths(10, 3))
+    for idx in range(5):
+        tree.newBranch("1", str(idx), length = gen.gaussianInts(10, 3), t = 'children1')
     tree.draw()
+    print(tree.tracker)
 
 if __name__ == "__main__":
     main()

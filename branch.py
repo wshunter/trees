@@ -26,6 +26,8 @@ class Branch:
         self.type = t
         self.numChildren = 0
         
+
+
         self.populateDefault()
 
     def populateDefault(self):
@@ -35,6 +37,7 @@ class Branch:
 
     def testgetlength(self):
         return self.len
+
 
     #tells the tree to create a new branch with the parent's name and a new digit. Both the branch and the tree can create new branches.
     # def growChild(self):
