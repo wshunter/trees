@@ -13,6 +13,9 @@ def main():
     rd.seed()
     tree = coordinator()
     tree.newBranch("1","1",length=8)
+    tree.newBranch("1","2",length=6)
+    for idx in range(200):
+        tree.newBranch("1", str(idx), length = gen.gaussianBranchLengths(10, 3))
     tree.draw()
 
 if __name__ == "__main__":

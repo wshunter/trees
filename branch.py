@@ -29,11 +29,9 @@ class Branch:
         self.populateDefault()
 
     def populateDefault(self):
-        print(self.vertices.shape[0])
-        for x, y in gen.verticalWeightedMotion(self.vertices.shape[0]):
-            print(x, " ", y)
-
-        pass
+        for x, y, idx in gen.verticalWeightedMotion(self.vertices.shape[0]):
+            self.vertices[idx][0] = x
+            self.vertices[idx][1] = y
 
     def testgetlength(self):
         return self.len
