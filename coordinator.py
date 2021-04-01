@@ -34,8 +34,8 @@ class coordinator():
         
         #draw leaf at the end of branch
         #TODO: write function to get the tuple position of a certain element along the branch
-        if type != 'leaf':
-            self.newBranch(name, children, length = 0, form = 'leaf', start = (self.tracker[name].vertices[length, 0], self.tracker[name].vertices[length, 1], self.tracker[name].vertices[length, 2]))
+        if form != 'leaf':
+            self.newBranch(name, children, length = 0, form = 'leaf', start = (self.tracker[name].vertices[length-1, 0], self.tracker[name].vertices[length-1, 1], self.tracker[name].vertices[length-1, 2]))
 
 
     def draw(self):

@@ -14,7 +14,7 @@ def main():
     rd.seed()
     tree = coordinator()
     for idx in range(1):
-        tree.newBranch("1", str(idx), length = gen.gaussianInts(10, 3), type = 'children1')
+        tree.newBranch("1", str(idx), length = gen.gaussianInts(10, 3), type = 'default')
     tree.draw()
     print(tree.tracker)
 
