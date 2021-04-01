@@ -18,18 +18,19 @@ class coordinator():
         children = 0
 
 
-
         #special modes for the branch type
         if type == 'children1':
             numChildren = gen.gaussianInts(0,2,min = 0)
             if numChildren == 0:
+                #if it is decided this branch should have no sub children, create a leaf and exit the function
+                self.newBranch(name, children, length = 0, form = 'leaf', start = (self.tracker[name].vertices[length-1, 0], self.tracker[name].vertices[length-1, 1], self.tracker[name].vertices[length-1, 2]))
                 return
             for idx in range(numChildren): #need to add functionality to start the branches somewhere other than the origin
                 maxLength = self.tracker[name].length
                 if maxLength > 1:
                     startPosIdx = gen.randomIntRange(1,maxLength)
                     startPos = (self.tracker[name].vertices[startPosIdx, 0], self.tracker[name].vertices[startPosIdx, 1], self.tracker[name].vertices[startPosIdx, 2])
-                    self.newBranch(name, idx, length = gen.gaussianInts(length/2,2), type = 'children1', start = startPos)
+                    self.newBranch(name, idx, length = gen.gaussianInts(length/2,2), type = 'default', start = startPos)
                     children += 1
         
         #draw leaf at the end of branch
@@ -54,7 +55,7 @@ class coordinator():
                     verts.append(vert)
                     codes.append(code)
                 path = Path(verts, codes)
-                patch = patches.PathPatch(path, fill = True, facecolor= 'orange')
+                patch = patches.PathPatch(path, fill = True, facecolor= 'green')
                 self.ax.add_patch(patch)
 
 

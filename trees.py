@@ -13,10 +13,13 @@ from coordinator import *
 def main():
     rd.seed()
     tree = coordinator()
-    for idx in range(1):
-        tree.newBranch("1", str(idx), length = gen.gaussianInts(10, 3), type = 'default')
+    for idx in range(10):
+        tree.newBranch("1", str(idx), length = gen.gaussianInts(10, 3), type = 'children1')
+
+    for b in tree.tracker:
+        print(tree.tracker[b].name, " ", tree.tracker[b].form)
+
     tree.draw()
-    print(tree.tracker)
 
 if __name__ == "__main__":
     main()
