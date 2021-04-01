@@ -21,17 +21,18 @@ def gaussianRightAngle(angle):
         return angle - math.pi / 2 + ofs
 
 
-
-def angularWeightedMotion(length, start):
+#generates a list of coordinates. each coordinate moves forward by some distance, which varies by -segLength[0] to segLength[0]
+#in a direction varying by -segLength[1] radians to segLength[1] radians
+def angularWeightedMotion(length, start, segLength):
     velR = 1
     velT = math.pi/2
     posX = start[0]
     posY = start[1]
-    theta = start[2]
+    theta = start[2] 
     yield posX, posY, theta, 0
     for i in range(length-1):
-        velR += randomVel() / 10
-        velT += randomTheta()/8
+        velR += randomVel() * segLength[0]
+        velT += randomTheta() * segLength[1]
 
         posX += velR*math.cos(velT)
         posY += velR*math.sin(velT)
@@ -65,10 +66,6 @@ def leafConstruct(num, start):
 def gaussianInts(mean, standardDeviation, min = 1):
     val = np.random.normal(mean, standardDeviation) + 0.5
     val = int(val)
-    if min == False:
-        return val
-    if min == True:
-        min = 1
     if val < min:
         val = min
     return val

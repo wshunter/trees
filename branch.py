@@ -16,10 +16,13 @@ class Branch:
     def __init__(self, creatorName, childNumber, options, length, start):
         self.form = options.form
         self.type = options.type
+        self.segLength = options.segLength
+        self.color = options.color
         self.length = length #do NOT call options.getlength() directly, it was pre-decided on by the tree.
         self.vertices = np.ndarray((self.length,3))
         self.parentName = creatorName
         self.start = start
+        self.name = str(creatorName) + '.' + str(childNumber)
         #ensure the creator and child numbers are ints
         try:
             self.name = str(creatorName) + '.' + str(childNumber)
@@ -27,9 +30,10 @@ class Branch:
         
         if self.form == 'branch':
             self.populateDefault(self.type)
+        print("created new branch named ", self.name, " with type ", options.type, " and form ", options.form," with origin at ", start)
 
     def populateDefault(self, type):
-        for x, y, t, idx in gen.angularWeightedMotion(self.vertices.shape[0], self.start):
+        for x, y, t, idx in gen.angularWeightedMotion(self.vertices.shape[0], self.start, self.segLength):
             self.vertices[idx][0] = x
             self.vertices[idx][1] = y
             self.vertices[idx][2] = t

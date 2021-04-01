@@ -11,16 +11,18 @@ from wind import windclass
 from branch import *
 from coordinator import *
 #%%
-
+test = (1, 0.01)
+print(test[0])
+print(test[1])
 # %%
 def main():
     rd.seed()
     tree = coordinator()
-    for idx in range(3):
+    for idx in range(1):
         tree.newBranch("1", str(idx), cfg.kids)
 
-    #for b in tree.tracker:
-    #    print(tree.tracker[b].name, " ", tree.tracker[b].form)
+    for b in tree.tracker:
+        print(tree.tracker[b].name, " ", tree.tracker[b].form)
 
     tree.draw()
 
