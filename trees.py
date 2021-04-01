@@ -6,18 +6,21 @@ import math
 import matplotlib.path as path
 import matplotlib.patches as patches
 
+import branchconfig as cfg
 from wind import windclass
 from branch import *
 from coordinator import *
+#%%
+
 # %%
 def main():
     rd.seed()
     tree = coordinator()
-    for idx in range(10):
-        tree.newBranch("1", str(idx), length = gen.gaussianInts(10, 3), type = 'children1')
+    for idx in range(3):
+        tree.newBranch("1", str(idx), cfg.kids)
 
-    for b in tree.tracker:
-        print(tree.tracker[b].name, " ", tree.tracker[b].form)
+    #for b in tree.tracker:
+    #    print(tree.tracker[b].name, " ", tree.tracker[b].form)
 
     tree.draw()
 

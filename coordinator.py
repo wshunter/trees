@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
 import generators as gen
+import branchconfig as cfg
 
 LEAFVERTS = 7
 
@@ -11,32 +12,36 @@ class coordinator():
         self.tracker = {}
         self.fig, self.ax = plt.subplots()
 
-    def newBranch(self,callerName,childNumber,length=1,type = 'default', start = (0,0,0), form = 'branch'):
+    def newBranch(self,callerName,childNumber,options,start = (0,0,0)):
         name = str(callerName) + '.' + str(childNumber)
-        self.tracker[name] = Branch(callerName,childNumber,length,type,start, form = form)
+        length = options.getLength() #length needs to be pre-calculated so that the tree and the branch agree on the length
+        #so it is passed separately to the branch constructor
+        self.tracker[name] = Branch(callerName, childNumber, options, length, start)
 
         children = 0
 
 
         #special modes for the branch type
-        if type == 'children1':
+        if options.type == 'children1':
             numChildren = gen.gaussianInts(0,2,min = 0)
             if numChildren == 0:
                 #if it is decided this branch should have no sub children, create a leaf and exit the function
-                self.newBranch(name, children, length = 0, form = 'leaf', start = (self.tracker[name].vertices[length-1, 0], self.tracker[name].vertices[length-1, 1], self.tracker[name].vertices[length-1, 2]))
+                self.newBranch(name, children, cfg.leafstandard, start = self.tracker[name].getPos(length-1))
                 return
             for idx in range(numChildren): #need to add functionality to start the branches somewhere other than the origin
                 maxLength = self.tracker[name].length
                 if maxLength > 1:
                     startPosIdx = gen.randomIntRange(1,maxLength)
-                    startPos = (self.tracker[name].vertices[startPosIdx, 0], self.tracker[name].vertices[startPosIdx, 1], self.tracker[name].vertices[startPosIdx, 2])
-                    self.newBranch(name, idx, length = gen.gaussianInts(length/2,2), type = 'default', start = startPos)
+                    startPos = self.tracker[name].getPos(startPosIdx)
+                    self.newBranch(name, idx, options = cfg.normal, start = startPos)
                     children += 1
         
         #draw leaf at the end of branch
         #TODO: write function to get the tuple position of a certain element along the branch
-        if form != 'leaf':
-            self.newBranch(name, children, length = 0, form = 'leaf', start = (self.tracker[name].vertices[length-1, 0], self.tracker[name].vertices[length-1, 1], self.tracker[name].vertices[length-1, 2]))
+        if options.form != 'leaf':
+            lastPos = length - 1
+            newCoords = self.tracker[name].getPos(lastPos)
+            self.newBranch(name, children, options = cfg.leafstandard, start = newCoords)
 
 
     def draw(self):
@@ -63,3 +68,5 @@ class coordinator():
         self.ax.set_xlim(-10, 10)
         self.ax.set_ylim(0,20)
         plt.show()
+    
+    
