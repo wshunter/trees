@@ -7,22 +7,19 @@ import matplotlib.path as path
 import matplotlib.patches as patches
 
 import branchconfig as cfg
-from wind import windclass
 from branch import *
 from coordinator import *
-#%%
-test = (1, 0.01)
-print(test[0])
-print(test[1])
+
 # %%
 def main():
     rd.seed()
     tree = coordinator()
     for idx in range(1):
-        tree.newBranch("1", str(idx), cfg.kids)
+        startPos = (10*idx, 0, 0)
+        tree.newBranch("1", str(idx), cfg.kids, start = startPos)
 
     for b in tree.tracker:
-        print(tree.tracker[b].name, " ", tree.tracker[b].form)
+        print(tree.tracker[b].name, " ", tree.tracker[b].options.form)
 
     tree.draw()
 

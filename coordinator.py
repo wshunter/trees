@@ -14,6 +14,8 @@ class coordinator():
         self.fig, self.ax = plt.subplots()
 
     def newBranch(self,callerName,childNumber,options,start = (0,0,math.pi / 2)):
+        if options.form == 'none':
+            return
         name = str(callerName) + '.' + str(childNumber)
         length = options.getLength() #length needs to be pre-calculated so that the tree and the branch agree on the length
         #so it is passed separately to the branch constructor
@@ -39,7 +41,7 @@ class coordinator():
                     children += 1
         '''
         #generate sub branches according to the getchildsettings function
-        if options.size != 0 and options.form == 'branch':
+        if options.form == 'branch':
             if options.proclivity[2] == cfg.PER_NODE:
                 for node in range(length-1): #don't generate kids at node 0
                     numchildren = gen.gaussianInts(options.proclivity[0], options.proclivity[1])
@@ -48,6 +50,13 @@ class coordinator():
                         newname = str(name) + '.' + str(children)
                         self.newBranch(name, children, childrenOptions, self.tracker[name].getPos(node+1))
                         children += 1
+            if options.proclivity[2] == cfg.TOTAL:
+                numchildren = gen.gaussianInts(options.proclivity[0], options.proclivity[1])
+                for child in range(numchildren):
+                    idx = gen.randomIntRange(1, length - 1)
+                    childrenOptions = options.getChildSettings(options)
+                    self.newBranch(name, children, childrenOptions, self.tracker[name].getPos(idx))
+                    children += 1
 
         
         #draw leaf at the end of branch
@@ -62,26 +71,25 @@ class coordinator():
     def draw(self):
         paths = []
         for b in self.tracker:
-            if self.tracker[b].form == 'branch':
+            if self.tracker[b].options.form == 'branch':
                 verts = self.tracker[b].vertices[:,0:2]
                 path = Path(verts)
                 patch = patches.PathPatch(path, fill = False, edgecolor = 'black')
                 self.ax.add_patch(patch)
             #leaves' shape isn't really important, so it is only calculated when the leaf is drawn
-            elif self.tracker[b].form == 'leaf':
+            elif self.tracker[b].options.form == 'leaf':
                 verts = []
                 codes = []
                 for vert, code in gen.leafConstruct(LEAFVERTS, self.tracker[b].start):
                     verts.append(vert)
                     codes.append(code)
                 path = Path(verts, codes)
-                patch = patches.PathPatch(path, fill = True, facecolor= 'green')
+                patch = patches.PathPatch(path, fill = True, facecolor= self.tracker[b].options.color)
                 self.ax.add_patch(patch)
 
-
-
-        self.ax.set_xlim(-30, 30)
-        self.ax.set_ylim(0,60)
+        
+        self.ax.set_xlim(-10, 10)
+        self.ax.set_ylim(0, 20)
         plt.show()
     
     

@@ -7,13 +7,15 @@ def default_child_fn(option): #a default child generator function that returns a
     new_option = copy.copy(option)
     if new_option.size > 0:
         new_option.size -= 1
+        new_option.reach = (new_option.reach[0]-1, new_option.reach[1])
         return new_option
     else:
         return leafstandard
 
+
 class options():
     def __init__(self, type = 'default', form = 'branch', reach = (5,2), color = '#ff0000', size = 0, segLength = (0.1, 0.125),
-    proclivity = (0, 2, TOTAL), leafRate = (2, 0), childfunction = default_child_fn):
+    proclivity = (0, 2, TOTAL), leafRate = (2, 0), childfunction = default_child_fn, endWithLeaf = False):
         self.type = type #a string that instructs the tree how to do various things, like generate  
                          #the object's vertices or draw it
 
@@ -38,15 +40,17 @@ class options():
         self.getChildSettings = childfunction
 
 
+
     def getLength(self): #function that returns a random length depending on the reach.
                         #this is lets branches can share the same options object but have different lengths
             return gen.gaussianInts(self.reach[0], self.reach[1], min = 1)
 
-leafstandard = options(form = 'leaf', size = 0)
+
+leafstandard = options(form = 'leaf', size = 0, color = '#31782f')
 normal = options(reach = (10,3))
-kids = options(reach = (15,6), 
+kids = options(reach = (4,2), 
         form = 'branch', 
         type = 'default', 
-        segLength = (0.1, 0.125), 
-        proclivity = (0, 1, PER_NODE), 
+        segLength = (0.05, 0.125), 
+        proclivity = (1, 2, PER_NODE), 
         size = 3)
