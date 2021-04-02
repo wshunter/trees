@@ -15,17 +15,18 @@ def randomIntRange(lowerBound, upperBound):
     return val
 def gaussianRightAngle(angle):
     ofs = np.random.normal(0, math.pi/8)
+    ofs = 0
     if rd.random() > 0.5:
-        return angle + math.pi / 2 + ofs
+        return angle + math.pi / 8 + ofs
     else: 
-        return angle - math.pi / 2 + ofs
+        return angle - math.pi / 8 + ofs
 
 
 #generates a list of coordinates. each coordinate moves forward by some distance, which varies by -segLength[0] to segLength[0]
 #in a direction varying by -segLength[1] radians to segLength[1] radians
-def angularWeightedMotion(length, start, segLength):
+def verticalRandomMotion(length, start, segLength):
     velR = 1
-    velT = math.pi/2
+    velT = 0
     posX = start[0]
     posY = start[1]
     theta = start[2] 
@@ -33,12 +34,37 @@ def angularWeightedMotion(length, start, segLength):
     for i in range(length-1):
         velR += randomVel() * segLength[0]
         velT += randomTheta() * segLength[1]
-
-        posX += velR*math.cos(velT)
-        posY += velR*math.sin(velT)
         theta += velT
+        posX += velR*math.cos(theta)
+        posY += velR*math.sin(theta)
+        
 
         yield posX, posY, theta, i + 1
+
+def perpendicularRandomMotion(length, start, segLength):
+    velR = 1
+    velT = 0
+    posX = start[0]
+    posY = start[1]
+    theta = start[2]
+    theta = gaussianRightAngle(theta)
+    yield posX, posY, theta, 0
+    for i in range(length-1):
+        velR += randomVel() * segLength[0]
+        velT += randomTheta() * segLength[1]
+        theta += velT
+        posX += velR*math.cos(theta)
+        posY += velR*math.sin(theta)
+        
+
+        yield posX, posY, theta, i + 1
+
+def curvedMotion(length, start, segLength):
+    velR = 1
+    velT = math.pi/2
+    posX = start[0]
+    posY = start[1]
+    theta = start[2] 
 
 def leafConstruct(num, start):
     vel = 0.3
@@ -58,6 +84,8 @@ def leafConstruct(num, start):
         pY += vel*math.sin(theta)
         yield (pX, pY), Path.LINETO
     yield (0,0), Path.CLOSEPOLY
+
+
 
 
 

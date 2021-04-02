@@ -89,7 +89,7 @@ class coordinator():
 
         
         self.ax.set_xlim(-10, 10)
-        self.ax.set_ylim(0, 20)
+        self.ax.set_ylim(-2, 18)
         plt.show()
     
     

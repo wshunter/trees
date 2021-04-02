@@ -29,11 +29,11 @@ class Branch:
         except: print("warning: name passed as an int instead of a string")
         
         if self.options.form == 'branch':
-            self.populateDefault(self.options.type)
-        print("created new branch named ", self.name, " with type ", options.type, " and form ", options.form," with origin at ", start)
+            self.populate()
+        #print("created new branch named ", self.name, " with type ", options.type, " and form ", options.form," with origin at ", start)
 
-    def populateDefault(self, type):
-        for x, y, t, idx in gen.angularWeightedMotion(self.vertices.shape[0], self.start, self.options.segLength):
+    def populate(self):
+        for x, y, t, idx in self.options.popFunction(self.vertices.shape[0], self.start, self.options.segLength):
             self.vertices[idx][0] = x
             self.vertices[idx][1] = y
             self.vertices[idx][2] = t

@@ -14,12 +14,11 @@ from coordinator import *
 def main():
     rd.seed()
     tree = coordinator()
-    for idx in range(1):
-        startPos = (10*idx, 0, 0)
-        tree.newBranch("1", str(idx), cfg.kids, start = startPos)
+    startPos = (0, 0, math.pi/2)
+    tree.newBranch('1', '0', cfg.options(), start = startPos)
 
-    for b in tree.tracker:
-        print(tree.tracker[b].name, " ", tree.tracker[b].options.form)
+    #for b in tree.tracker:
+    #    print(tree.tracker[b].name, " ", tree.tracker[b].options.form)
 
     tree.draw()
 
@@ -27,6 +26,10 @@ if __name__ == "__main__":
     main()
     
 
+
+
+# %%
+print(math.sin(math.pi/2))
 
 
 # %%
